@@ -55,7 +55,7 @@
       <label for="category">Category:</label>
   <select id="category" name="category" [(ngModel)]="product.category" required #category="ngModel">
     <option value="">Select Category</option>
-    <option value="apparel">APPAREL</option>
+    <!-- <option value="apparel">APPAREL</option> -->
     <option value="gadgets">GADGETS</option>
   </select>
   <div *ngIf="category.invalid && (category.dirty || category.touched)" class="text-danger">
