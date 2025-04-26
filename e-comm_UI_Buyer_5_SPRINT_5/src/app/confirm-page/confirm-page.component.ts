@@ -5,7 +5,7 @@ import { PaymentService } from '../payment.service';
 import { Router } from '@angular/router';
 import { CartService } from '../cart.service';
 import { ConfirmPageService } from '../confirm-page.service';
-import { OrderDto, OrderItemDto } from '../order-list-dto';
+import { OrderDto } from '../order-list-dto';
 
 
 @Component({
@@ -57,54 +57,97 @@ export class ConfirmPageComponent {
   }
 
 
+  // confirmAllOrders(): void {
+  //   if (this.lastPayment && this.carts.length > 0) {
+  //     // Construct order object
+  //     const order: OrderDto = {
+  //       orderId: 0, // Server will generate order ID
+  //       paymentId: this.lastPayment.paymentId,
+      
+  //       buyerName: this.lastPayment.name,
+  //       email: this.lastPayment.email,
+  //       deliveryAddress: this.lastPayment.address,
+  //       phoneNo: this.lastPayment.phoneNo,
+  //       items: [],
+  //       totalOrderAmount: this.lastPayment.totalCartValue,
+  //       status: 'Payment Success'
+  //     };
+
+  //     // Calculate total order amount and create order items
+  //     for (const cart of this.carts) {
+  //       const orderItem: OrderItemDto = {
+  //         itemId: 0, // Server will generate item ID
+  //         productId: cart.productId,
+  //         productName: cart.name,
+  //         thumbnail: cart.thumbnail,
+  //         unitPrice: cart.price,
+  //         quantity: cart.quantity,
+  //         category: cart.category,
+  //         subcategory1: cart.subcategory1,
+  //         subcategory2: cart.subcategory2,
+  //         sellerEmailID: cart.sellerEmailID,
+  //         seller_id: cart.seller_id,
+  //         totalProductPrice:cart.totalproductPrice
+  //       };
+  //       order.items.push(orderItem);
+        
+  //     }
+
+  //     // Send order to backend
+  //     this.confirmpageService.addOrder(order).subscribe(response => {
+  //       console.log('Order placed successfully:', response);
+  //     }, error => {
+  //       console.error('Error placing order:', error);
+  //     });
+  //   } else {
+  //     console.error('No payment data or carts available.');
+  //   }
+
+  //   this.deletecart();
+  // }
   confirmAllOrders(): void {
     if (this.lastPayment && this.carts.length > 0) {
-      // Construct order object
-      const order: OrderDto = {
-        orderId: 0, // Server will generate order ID
-        paymentId: this.lastPayment.paymentId,
-      
-        buyerName: this.lastPayment.name,
-        email: this.lastPayment.email,
-        deliveryAddress: this.lastPayment.address,
-        phoneNo: this.lastPayment.phoneNo,
-        items: [],
-        totalOrderAmount: this.lastPayment.totalCartValue,
-        status: 'Payment Success'
-      };
-
-      // Calculate total order amount and create order items
       for (const cart of this.carts) {
-        const orderItem: OrderItemDto = {
-          itemId: 0, // Server will generate item ID
+        const order = {
+          orderId: 0, // backend will generate
+          paymentId: this.lastPayment.paymentId,
           productId: cart.productId,
           productName: cart.name,
           thumbnail: cart.thumbnail,
-          unitPrice: cart.price,
+          price: cart.price,
           quantity: cart.quantity,
           category: cart.category,
           subcategory1: cart.subcategory1,
           subcategory2: cart.subcategory2,
           sellerEmailID: cart.sellerEmailID,
-          seller_id: cart.seller_id,
-          totalProductPrice:cart.totalproductPrice
+        seller_id: cart.seller_id,
+          totalAmount: cart.totalproductPrice,
+          totalproductPrice: cart.totalproductPrice,
+          buyerName: this.lastPayment.name,
+          email: this.lastPayment.email,
+          address: this.lastPayment.address,
+          phoneNo: this.lastPayment.phoneNo,
+          description: cart.description || '',
+          status: 'Payment Success'
         };
-        order.items.push(orderItem);
-        
+  
+        this.confirmpageService.addOrder(order).subscribe(
+          (response) => {
+            console.log('Order placed successfully!', response);
+          },
+          (error) => {
+            console.error('Error placing order:', error);
+          }
+        );
       }
-
-      // Send order to backend
-      this.confirmpageService.addOrder(order).subscribe(response => {
-        console.log('Order placed successfully:', response);
-      }, error => {
-        console.error('Error placing order:', error);
-      });
+  
+      // After placing orders
+      this.deletecart();
     } else {
       console.error('No payment data or carts available.');
     }
-
-    this.deletecart();
   }
+  
 
   deletecart() {
     const buyerDtoString = localStorage.getItem('buyerDto');

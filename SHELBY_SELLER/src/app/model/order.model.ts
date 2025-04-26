@@ -21,11 +21,11 @@ export interface Order {
     productId: number;
     productName: string;
     thumbnail: string;
-    unitPrice: number;
+    price: number;
     quantity: number;
     category: string;
     subcategory1: string;
     subcategory2: string;
-    totalProductPrice:number;
+    totalproductPrice:number;
   }
   

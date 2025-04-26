@@ -52,7 +52,7 @@ export class OrderlistComponent implements OnInit {
     }
   
     calculateTotalRevenue() {
-      this.totalRevenue = this.itemDetails.reduce((total, OrderItem) => total + OrderItem.totalProductPrice, 0);
+      this.totalRevenue = this.itemDetails.reduce((total, item) => total + (item.totalproductPrice || 0), 0);
     }
 
 }
