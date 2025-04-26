@@ -13,6 +13,6 @@ export class ConfirmPageService {
   constructor(private http: HttpClient) { }
 
   addOrder(orderDto: OrderDto): Observable<string> {
-    return this.http.post<string>(`${this.baseUrl}/create`, orderDto);
+    return this.http.post<string>(`${this.baseUrl}/order`, orderDto);
   }
 }
