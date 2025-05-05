@@ -1,0 +1,191 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysqldb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: MEcomm
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - spring-net
+
+  eureka-server:
+    build: /Users/abhinaykumarnalband/Documents/springbootprojects/E_comm_Master_Codes/BACKEND SERVICES/serviceregistry
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - spring-net
+
+  buyerregistration-service:
+    build: .
+    container_name: buyerregistration-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/MEcomm
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_APPLICATION_NAME: buyerregistration-service
+    networks:
+      - spring-net
+
+  sellerregistration-service:
+    build: /Users/abhinaykumarnalband/Documents/springbootprojects/E_comm_Master_Codes/BACKEND SERVICES/sellerregistrationservice
+    container_name: sellerregistrationservice
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mysql
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/MEcomm
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_APPLICATION_NAME: SellerRegistration-Service
+    networks:
+      - spring-net
+
+  apigateway-service:
+    build: /Users/abhinaykumarnalband/Documents/springbootprojects/E_comm_Master_Codes/BACKEND SERVICES/apigateway
+    container_name: apigateway-service
+    ports:
+      - "9090:9090"
+    depends_on:
+      - mysql
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/MEcomm
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_APPLICATION_NAME: apigateway-service
+    networks:
+      - spring-net
+
+  buyercartpage:
+    build: /Users/abhinaykumarnalband/Documents/springbootprojects/E_comm_Master_Codes/BACKEND SERVICES/BuyerCartpage_sprint_5
+    container_name: buyercartpage
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mysql
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/MEcomm
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_APPLICATION_NAME: BuyerCartpage
+    networks:
+      - spring-net
+
+  chatservice:
+    build: /Users/abhinaykumarnalband/Documents/springbootprojects/E_comm_Master_Codes/BACKEND SERVICES/Chatservice
+    container_name: chatservice
+    ports:
+      - "8088:8088"
+    depends_on:
+      - mysql
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/MEcomm
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_APPLICATION_NAME: Chatservice
+    networks:
+      - spring-net
+
+  card:
+    build: /Users/abhinaykumarnalband/Documents/springbootprojects/E_comm_Master_Codes/BACKEND SERVICES/Card 2
+    container_name: card
+    ports:
+      - "8089:8089"
+    depends_on:
+      - mysql
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/MEcomm
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_APPLICATION_NAME: Card
+    networks:
+      - spring-net
+
+  orderservice:
+    build: /Users/abhinaykumarnalband/Documents/springbootprojects/E_comm_Master_Codes/BACKEND SERVICES/Orderservice_SPRINT_6/Orderservice_SPRINT_6
+    container_name: orderservice
+    ports:
+      - "8086:8086"
+    depends_on:
+      - mysql
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/MEcomm
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_APPLICATION_NAME: orderservice
+    networks:
+      - spring-net
+
+  paymentservice:
+    build: /Users/abhinaykumarnalband/Documents/springbootprojects/SHELBY_E_Comm_WebApp_Documents/Buyer_BackEnd/Buyer_BackEnd/PaymentService
+    container_name: paymentservice
+    ports:
+      - "8085:8085"
+    depends_on:
+      - mysql
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/MEcomm
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_APPLICATION_NAME: paymentservice
+    networks:
+      - spring-net
+
+  productservice:
+    build: /Users/abhinaykumarnalband/Documents/springbootprojects/E_comm_Master_Codes/BACKEND SERVICES/Product_Service 2
+    container_name: productservice
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - eureka-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/MEcomm
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_APPLICATION_NAME: ProductService
+    networks:
+      - spring-net
+
+volumes:
+  mysql_data:
+
+networks:
+  spring-net:
