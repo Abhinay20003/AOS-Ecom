@@ -43,13 +43,12 @@ npm install -g @angular/cli
 https://www.docker.com/products/docker-desktop/
 **Some Commands we use in Angular**
 
-ng new project-name
-ng serve –o
-ng serve
-ng g c Component-name
-Create in one folder
-ng g c foldername/component-name
-ng g p pipelinefolder/pipeline-name
+ng new project-name  ,
+ng serve –o  ,
+ng serve  ,
+ng g c Component-name  ,
+**Create in one folder**
+ng g c foldername/component-name  , ng g p pipelinefolder/pipeline-name  ,
 ng g s servicefolder/service-name
 **TO RUN THE DOCKER FILES:**
 ❖ GO TO THE DOCKERCOMPOSE.YML FILE PATH WHICH I HAVE IN MY
